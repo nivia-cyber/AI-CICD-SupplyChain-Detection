@@ -1,0 +1,25 @@
+name: CI Supply Chain Detection
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-detect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install scikit-learn pandas joblib
+
+      - name: Run pipeline
+        run: python pipeline.py

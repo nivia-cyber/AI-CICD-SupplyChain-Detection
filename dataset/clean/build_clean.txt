@@ -1,0 +1,3 @@
+SAFE_APPLICATION_CODE
+LibraryA
+LibraryB
