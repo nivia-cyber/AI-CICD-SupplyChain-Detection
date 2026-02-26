@@ -1,143 +1,15 @@
-[
-    {
-        "timestamp": "2026-02-26 19:40:33.208053",
-        "log_file": "logs\\attack1.txt",
-        "anomaly_score": 90,
-        "mitre_techniques": [
-            "T1059 - PowerShell Execution",
-            "T1033 - Account Discovery",
-            "T1105 - Ingress Tool Transfer"
-        ],
-        "risk_score": 100
-    },
-    {
-        "timestamp": "2026-02-26 19:40:33.210022",
-        "log_file": "logs\\attack2.txt",
-        "anomaly_score": 15,
-        "mitre_techniques": [
-            "T1033 - Account Discovery"
-        ],
-        "risk_score": 25
-    },
-    {
-        "timestamp": "2026-02-26 19:48:15.471447",
-        "log_file": "logs\\test_minimal.txt",
-        "anomaly_score": 0,
-        "mitre_techniques": [],
-        "risk_score": 0
-    },
-    {
-        "timestamp": "2026-02-26 19:49:17.509116",
-        "log_file": "logs\\test_medium.txt",
-        "anomaly_score": 0,
-        "mitre_techniques": [],
-        "risk_score": 0
-    },
-    {
-        "timestamp": "2026-02-26 19:49:59.565355",
-        "log_file": "logs\\test_critical.txt",
-        "anomaly_score": 0,
-        "mitre_techniques": [],
-        "risk_score": 0
-    },
-    {
-        "timestamp": "2026-02-26 19:54:34.855685",
-        "log_file": "logs\\attack1.txt",
-        "anomaly_score": 80,
-        "mitre_techniques": [
-            "T1059 - Command Execution",
-            "T1033 - Account Discovery",
-            "T1105 - Ingress Tool Transfer"
-        ],
-        "risk_score": 100
-    },
-    {
-        "timestamp": "2026-02-26 19:54:34.858166",
-        "log_file": "logs\\attack2.txt",
-        "anomaly_score": 20,
-        "mitre_techniques": [
-            "T1033 - Account Discovery"
-        ],
-        "risk_score": 30
-    },
-    {
-        "timestamp": "2026-02-26 19:54:34.873769",
-        "log_file": "logs\\test_critical.txt",
-        "anomaly_score": 100,
-        "mitre_techniques": [
-            "T1003 - Credential Dumping",
-            "T1059 - Command Execution",
-            "T1033 - Account Discovery",
-            "T1105 - Ingress Tool Transfer",
-            "T1027 - Obfuscated Files"
-        ],
-        "risk_score": 100
-    },
-    {
-        "timestamp": "2026-02-26 19:54:34.888870",
-        "log_file": "logs\\test_medium.txt",
-        "anomaly_score": 20,
-        "mitre_techniques": [
-            "T1059 - Command Execution",
-            "T1033 - Account Discovery"
-        ],
-        "risk_score": 40
-    },
-    {
-        "timestamp": "2026-02-26 19:54:34.906069",
-        "log_file": "logs\\test_minimal.txt",
-        "anomaly_score": 0,
-        "mitre_techniques": [],
-        "risk_score": 0
-    },
-    {
-        "timestamp": "2026-02-26 20:25:58.999844",
-        "log_file": "logs\\attack1.txt",
-        "anomaly_score": 80,
-        "mitre_techniques": [
-            "T1059 - Command Execution",
-            "T1033 - Account Discovery",
-            "T1105 - Ingress Tool Transfer"
-        ],
-        "risk_score": 100
-    },
-    {
-        "timestamp": "2026-02-26 20:25:59.003163",
-        "log_file": "logs\\attack2.txt",
-        "anomaly_score": 20,
-        "mitre_techniques": [
-            "T1033 - Account Discovery"
-        ],
-        "risk_score": 30
-    },
-    {
-        "timestamp": "2026-02-26 20:25:59.019482",
-        "log_file": "logs\\test_critical.txt",
-        "anomaly_score": 100,
-        "mitre_techniques": [
-            "T1003 - Credential Dumping",
-            "T1059 - Command Execution",
-            "T1033 - Account Discovery",
-            "T1105 - Ingress Tool Transfer",
-            "T1027 - Obfuscated Files"
-        ],
-        "risk_score": 100
-    },
-    {
-        "timestamp": "2026-02-26 20:25:59.034226",
-        "log_file": "logs\\test_medium.txt",
-        "anomaly_score": 20,
-        "mitre_techniques": [
-            "T1059 - Command Execution",
-            "T1033 - Account Discovery"
-        ],
-        "risk_score": 40
-    },
-    {
-        "timestamp": "2026-02-26 20:25:59.044918",
-        "log_file": "logs\\test_minimal.txt",
-        "anomaly_score": 0,
-        "mitre_techniques": [],
-        "risk_score": 0
+{
+    "timestamp": "2026-02-26 21:37:15.777170",
+    "artifact": "dataset/current_build.txt",
+    "status": "CLEAN",
+    "risk_score": 0,
+    "severity": "MINIMAL",
+    "sha256": "a3678b4cf88c4c68f92ce4ce092a9e0c09198f720296d69fd7612def7f1a6be9",
+    "mitre_techniques": [],
+    "features": {
+        "size": 48,
+        "entropy": 3.888764974387061,
+        "suspicious_count": 0,
+        "hash": "a67cb7aeb84f91fe53bcb40fd6907ce96dc40f7be79e1ef7b21470c516b61da5"
     }
-]
+}
