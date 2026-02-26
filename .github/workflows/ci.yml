@@ -1,4 +1,4 @@
-name: AI CI Pipeline
+name: AI DevSecOps Pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-detect:
+  secure-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install scikit-learn pandas joblib
+          pip install -r requirements.txt
+          pip install pip-audit
+
+      - name: Run dependency vulnerability scan
+        run: pip-audit
 
       - name: Run Pipeline
         run: python pipeline.py
+
+      - name: Verify model integrity
+        run: python integrity_check.py
+
+      - name: Upload trained model
+        uses: actions/upload-artifact@v3
+        with:
+          name: trained-model
+          path: model.pkl
