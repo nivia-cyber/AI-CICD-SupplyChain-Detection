@@ -1,38 +1,39 @@
-import sys
 import joblib
+import sys
+import json
 from fingerprinting import extract_features
 
-def main():
-    try:
-        # Load trained model
-        model = joblib.load("model.pkl")
-    except Exception as e:
-        print("❌ Failed to load model:", e)
-        sys.exit(2)  # Critical failure
+# Load model
+model = joblib.load("model.pkl")
 
-    file_path = input("Enter path of build artifact: ")
+file_path = input("Enter path of build artifact: ")
 
-    try:
-        features = extract_features(file_path)
-    except Exception as e:
-        print("❌ Feature extraction failed:", e)
-        sys.exit(2)
+features = extract_features(file_path)
 
-    feature_vector = [[
-        features["size"],
-        features["entropy"],
-        features["suspicious_count"]
-    ]]
+feature_vector = [[
+    features["size"],
+    features["entropy"],
+    features["suspicious_count"]
+]]
 
-    prediction = model.predict(feature_vector)
+prediction = model.predict(feature_vector)
 
-    if prediction[0] == 0:
-        print("✅ Build is CLEAN")
-        sys.exit(0)   # Success
-    else:
-        print("🚨 Build is COMPROMISED")
-        sys.exit(1)   # ❗ This FAILS GitHub Actions
+result = "CLEAN" if prediction[0] == 0 else "COMPROMISED"
 
+print(f"Build is {result}")
 
-if __name__ == "__main__":
-    main()
+# Save report for dashboard
+report = {
+    "file": file_path,
+    "size": features["size"],
+    "entropy": features["entropy"],
+    "suspicious_count": features["suspicious_count"],
+    "status": result
+}
+
+with open("report.json", "w") as f:
+    json.dump(report, f, indent=4)
+
+# Fail CI if compromised
+if result == "COMPROMISED":
+    sys.exit(1)

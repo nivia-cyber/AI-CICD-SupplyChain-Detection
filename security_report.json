@@ -1,0 +1,9 @@
+{
+    "timestamp": "2026-02-26 12:46:46.202323",
+    "artifact_analyzed": "dataset/clean/build_clean.txt",
+    "size": 43,
+    "entropy": 4.184183719779188,
+    "suspicious_count": 0,
+    "build_status": "CLEAN",
+    "model_sha256": "9eeb6059bde6a586c76ad3cf905d3a64a4c0a75757e45135305ee1529cf53e14"
+}
