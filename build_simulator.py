@@ -1,23 +1,35 @@
 import os
+import random
 
-def create_clean_build():
-    content = "SAFE_APPLICATION_CODE\n"
-    content += "LibraryA\n"
-    content += "LibraryB\n"
+# Make sure dataset folder exists
+os.makedirs("dataset", exist_ok=True)
 
-    with open("dataset/clean/build_clean.txt", "w") as f:
-        f.write(content)
+artifact_path = "dataset/current_build.txt"
 
-def create_compromised_build():
-    content = "SAFE_APPLICATION_CODE\n"
-    content += "LibraryA\n"
-    content += "LibraryB\n"
-    content += "MALICIOUS_BACKDOOR\n"
+# Simulate either clean or compromised build randomly
+clean_content = [
+    "application start",
+    "user login",
+    "data processing"
+]
 
-    with open("dataset/compromised/build_compromised.txt", "w") as f:
-        f.write(content)
+compromised_content = [
+    "application start",
+    "whoami",
+    "powershell -enc attack",
+    "nc 10.0.0.5 4444"
+]
 
-if __name__ == "__main__":
-    create_clean_build()
-    create_compromised_build()
-    print("Build artifacts generated successfully.")
+# Randomly choose build type
+if random.choice([True, False]):
+    content = clean_content
+    print("Generated CLEAN build")
+else:
+    content = compromised_content
+    print("Generated COMPROMISED build")
+
+with open(artifact_path, "w") as f:
+    for line in content:
+        f.write(line + "\n")
+
+print("Build artifact generated at:", artifact_path)
