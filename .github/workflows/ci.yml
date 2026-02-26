@@ -1,12 +1,10 @@
-name: Adaptive Security Pipeline
+name: AI Supply Chain Detection Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build-and-detect:
@@ -19,12 +17,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.13"
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install scikit-learn pandas joblib
+          pip install -r requirements.txt
 
-      - name: Run Adaptive Security Pipeline
+      - name: Train Model
+        run: python model_train.py
+
+      - name: Run Supply Chain Detection Pipeline
         run: python pipeline.py

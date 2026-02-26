@@ -1,9 +1,12 @@
-import random
+def calculate_risk(suspicious_count, entropy, prediction):
+    score = 0
 
-def calculate_risk(detection_result):
-    base_score = random.uniform(0.5, 0.9)
+    if prediction == 1:
+        score += 50
 
-    if detection_result == "COMPROMISED":
-        return round(base_score, 2)
-    else:
-        return round(random.uniform(0.1, 0.4), 2)
+    score += suspicious_count * 10
+
+    if entropy > 7.5:
+        score += 20
+
+    return min(score, 100)
