@@ -9,7 +9,7 @@ from streamlit_autorefresh import st_autorefresh
 # --------------------------------------------------
 # PAGE CONFIG
 # --------------------------------------------------
-st.set_page_config(page_title="AI DevSecOps SOC", layout="wide")
+st.set_page_config(page_title="AI DevSecOps Supply Chain", layout="wide")
 
 # --------------------------------------------------
 # AUTO REFRESH
@@ -28,18 +28,19 @@ h2, h3 { color: #38bdf8; }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡 Real-Time DevSecOps Threat Intelligence Center")
+st.title("🛡 AI-Driven CI/CD Supply Chain Threat Detection")
 
 # --------------------------------------------------
 # LOAD DATA
 # --------------------------------------------------
 if not os.path.exists("security_report.json"):
-    st.warning("Run realtime_engine.py first.")
+    st.warning("Run pipeline.py first to generate security_report.json.")
     st.stop()
 
 with open("security_report.json", "r") as f:
     data = json.load(f)
 
+# Support both single object and list history
 if not isinstance(data, list):
     data = [data]
 
@@ -48,34 +49,17 @@ df["timestamp"] = pd.to_datetime(df["timestamp"])
 
 latest_event = df.iloc[-1]
 
-risk_score = latest_event["risk_score"]
-anomaly_score = latest_event["anomaly_score"]
-mitre_count = len(latest_event["mitre_techniques"])
-
-# --------------------------------------------------
-# SEVERITY CLASSIFICATION
-# --------------------------------------------------
-def classify(score):
-    if score >= 85:
-        return "Critical"
-    elif score >= 60:
-        return "High"
-    elif score >= 40:
-        return "Medium"
-    elif score >= 20:
-        return "Low"
-    else:
-        return "Minimal"
-
-df["severity"] = df["risk_score"].apply(classify)
-current_severity = classify(risk_score)
+risk_score = latest_event.get("risk_score", 0)
+severity = latest_event.get("severity", "Minimal")
+mitre_list = latest_event.get("mitre_techniques", [])
+mitre_count = len(mitre_list)
 
 # --------------------------------------------------
 # KPI SECTION
 # --------------------------------------------------
 col1, col2, col3 = st.columns(3)
 col1.metric("⚠ Risk Score", risk_score)
-col2.metric("📡 Anomaly Score", anomaly_score)
+col2.metric("🚨 Severity", severity)
 col3.metric("🎯 MITRE Techniques", mitre_count)
 
 st.caption(f"Last Event: {latest_event['timestamp']}")
@@ -131,6 +115,9 @@ st.divider()
 # --------------------------------------------------
 st.subheader("🔥 Severity Distribution")
 
+if "severity" not in df.columns:
+    df["severity"] = "Minimal"
+
 sev_count = df["severity"].value_counts().reset_index()
 sev_count.columns = ["Severity", "Count"]
 
@@ -140,6 +127,11 @@ pie = px.pie(
     values="Count",
     color="Severity",
     color_discrete_map={
+        "CRITICAL": "#d00000",
+        "HIGH": "#f77f00",
+        "MEDIUM": "#ffd166",
+        "LOW": "#118ab2",
+        "MINIMAL": "#06d6a0",
         "Critical": "#d00000",
         "High": "#f77f00",
         "Medium": "#ffd166",
@@ -179,6 +171,8 @@ if all_techniques:
     )
 
     st.plotly_chart(mitre_chart, use_container_width=True)
+else:
+    st.info("No MITRE techniques detected.")
 
 st.divider()
 
@@ -187,13 +181,13 @@ st.divider()
 # --------------------------------------------------
 st.subheader("🧠 Current Threat Level")
 
-if current_severity == "Critical":
-    st.error("🔴 CRITICAL THREAT DETECTED")
-elif current_severity == "High":
+if severity.upper() == "CRITICAL":
+    st.error("🔴 CRITICAL SUPPLY CHAIN THREAT")
+elif severity.upper() == "HIGH":
     st.error("🟠 HIGH RISK ACTIVITY")
-elif current_severity == "Medium":
+elif severity.upper() == "MEDIUM":
     st.warning("🟡 MEDIUM RISK ACTIVITY")
-elif current_severity == "Low":
+elif severity.upper() == "LOW":
     st.info("🔵 LOW RISK ACTIVITY")
 else:
     st.success("🟢 Minimal Threat Activity")
@@ -201,19 +195,25 @@ else:
 st.divider()
 
 # --------------------------------------------------
-# LATEST 5 EVENTS
+# SHA256 DISPLAY
 # --------------------------------------------------
-st.subheader("⏱ Latest 5 Events")
-
-latest5 = df.sort_values("timestamp", ascending=False).head(5)
-st.dataframe(latest5)
+st.subheader("🔐 Artifact SHA256 Hash")
+st.code(latest_event.get("sha256", "Not available"))
 
 st.divider()
 
 # --------------------------------------------------
-# FULL EVENT TABLE
+# FEATURE BREAKDOWN
 # --------------------------------------------------
-st.subheader("📋 Full Event History")
+st.subheader("🧬 Behavioral Fingerprint Features")
+st.json(latest_event.get("features", {}))
+
+st.divider()
+
+# --------------------------------------------------
+# LATEST EVENTS TABLE
+# --------------------------------------------------
+st.subheader("📋 Event History")
 st.dataframe(df.sort_values("timestamp", ascending=False))
 
 st.divider()
@@ -232,4 +232,4 @@ st.download_button(
 )
 
 st.markdown("---")
-st.caption("Adaptive AI-Driven Real-Time Threat Monitoring System")
+st.caption("AI-Driven Behavioral Supply Chain Security Monitoring System")

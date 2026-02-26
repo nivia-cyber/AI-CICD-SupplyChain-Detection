@@ -1,28 +1,24 @@
-import os
 import joblib
+import os
 from sklearn.ensemble import RandomForestClassifier
 from fingerprinting import extract_features
 
-X = []
-y = []
+print("Training model...")
 
-# Clean builds (label = 0)
-for file in os.listdir("dataset/clean"):
-    path = os.path.join("dataset/clean", file)
-    features = extract_features(path)
-    X.append([features["size"], features["entropy"], features["suspicious_count"]])
-    y.append(0)
+clean = extract_features("dataset/clean/build_clean.txt")
+comp = extract_features("dataset/compromised/build_compromised.txt")
 
-# Compromised builds (label = 1)
-for file in os.listdir("dataset/compromised"):
-    path = os.path.join("dataset/compromised", file)
-    features = extract_features(path)
-    X.append([features["size"], features["entropy"], features["suspicious_count"]])
-    y.append(1)
+X = [
+    [clean["size"], clean["entropy"], clean["suspicious_count"]],
+    [comp["size"], comp["entropy"], comp["suspicious_count"]]
+]
+
+y = [0, 1]
 
 model = RandomForestClassifier()
 model.fit(X, y)
 
 joblib.dump(model, "model.pkl")
 
-print("Model trained and saved successfully.")
+print("Model trained successfully.")
+print("Saved at:", os.path.abspath("model.pkl"))
