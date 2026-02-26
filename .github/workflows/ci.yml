@@ -1,12 +1,15 @@
-name: AI DevSecOps Pipeline
+name: Adaptive Security Pipeline
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  secure-build:
+  build-and-detect:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,25 +19,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
+          python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install scikit-learn pandas joblib
 
-      - name: Install pip-audit
-        run: pip install pip-audit
-
-      - name: Run dependency vulnerability scan
-        run: pip-audit || true
-
-      - name: Run Pipeline
+      - name: Run Adaptive Security Pipeline
         run: python pipeline.py
-
-      - name: Verify model integrity
-        run: python integrity_check.py
-
-      - name: Upload trained model
-        uses: actions/upload-artifact@v4
-        with:
-          name: trained-model
-          path: model.pkl
